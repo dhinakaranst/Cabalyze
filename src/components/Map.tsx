@@ -130,7 +130,7 @@ export default function Map() {
     if (map) {
       // Clear existing markers
       markers.forEach(marker => marker.setMap(null));
-      
+
       const marker = new google.maps.Marker({
         position: location,
         map: map,
@@ -143,7 +143,7 @@ export default function Map() {
           strokeWeight: 2
         }
       });
-      
+
       setMarkers([marker]);
     }
   };
@@ -175,7 +175,7 @@ export default function Map() {
     try {
       // Get coordinates from Google Places API
       const geocoder = new google.maps.Geocoder();
-      
+
       const [pickupResult, dropoffResult] = await Promise.all([
         geocoder.geocode({ address: searchInput }),
         geocoder.geocode({ address: destinationInput })
@@ -198,24 +198,24 @@ export default function Map() {
 
       // Mock data for other services
       const mockPrices: RidePrice[] = [
-        { 
-          service: 'Uber', 
+        {
+          service: 'Uber',
           price: uberPrice.price,
           time: uberPrice.duration,
           type: uberPrice.type,
           logo: '/assets/images/uber.png'
         },
-        { 
-          service: 'Ola', 
-          price: Math.random() * 500 + 100, 
-          time: Math.floor(Math.random() * 20) + 5, 
+        {
+          service: 'Ola',
+          price: Math.random() * 500 + 100,
+          time: Math.floor(Math.random() * 20) + 5,
           type: 'Mini',
           logo: '/assets/images/ola.png'
         },
-        { 
-          service: 'Rapido', 
-          price: Math.random() * 500 + 100, 
-          time: Math.floor(Math.random() * 20) + 5, 
+        {
+          service: 'Rapido',
+          price: Math.random() * 500 + 100,
+          time: Math.floor(Math.random() * 20) + 5,
           type: 'Bike',
           logo: '/assets/images/rapido.png'
         }
@@ -288,12 +288,12 @@ export default function Map() {
   return (
     <div className="relative w-full h-full">
       <div className="absolute top-4 left-4 right-4 z-10">
-        <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+        <div className="bg-black bg-opacity-30 rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
           <div className="space-y-4">
             <div className="flex flex-col gap-4">
               <div>
-                <label 
-                  htmlFor="pickup-input" 
+                <label
+                  htmlFor="pickup-input"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Pickup Location
@@ -308,12 +308,12 @@ export default function Map() {
                   placeholder="Enter pickup location"
                   autoComplete="off"
                   aria-label="Pickup location"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
+                  className="bg-gray-200 bg-opacity-40 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
                 />
               </div>
               <div>
-                <label 
-                  htmlFor="drop-input" 
+                <label
+                  htmlFor="drop-input"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Drop-off Location
@@ -328,24 +328,24 @@ export default function Map() {
                   placeholder="Enter drop-off location"
                   autoComplete="off"
                   aria-label="Drop-off location"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
+                  className=" bg-gray-200 bg-opacity-40 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
                 />
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <button
                 onClick={calculatePrices}
-                className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2 bg-indigo-600 text-white text-base sm:text-xs rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center gap-2"
               >
-                <Car className="w-4 h-4" />
+                <Car className="w-5 h-5 sm:w-4" />
                 Compare Prices
               </button>
               <button
                 onClick={centerOnUserLocation}
                 className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 flex items-center gap-2"
               >
-                <Navigation className="w-4 h-4" />
+                <Navigation className="w-5 h-5 sm:w-4" />
                 My Location
               </button>
             </div>
@@ -364,11 +364,10 @@ export default function Map() {
                 {prices.map((price, index) => (
                   <div
                     key={price.service}
-                    className={`p-4 rounded-lg ${
-                      index === 0
-                        ? 'bg-green-50 border border-green-200'
-                        : 'bg-white border border-gray-200'
-                    }`}
+                    className={`p-4 rounded-lg ${index === 0
+                      ? 'bg-green-50 border border-green-200'
+                      : 'bg-white border border-gray-200'
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -404,8 +403,8 @@ export default function Map() {
           </div>
         </div>
       </div>
-      <div 
-        ref={mapRef} 
+      <div
+        ref={mapRef}
         className="w-full h-full rounded-lg shadow-lg"
         style={{ marginTop: '20px' }} // Add some margin to prevent overlap
       />
