@@ -288,7 +288,7 @@ export default function Map() {
   return (
     <div className="relative w-full h-full">
       <div className="absolute top-4 left-4 right-4 z-10">
-        <div className="bg-black bg-opacity-30 rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
           <div className="space-y-4">
             <div className="flex flex-col gap-4">
               <div>
@@ -308,7 +308,7 @@ export default function Map() {
                   placeholder="Enter pickup location"
                   autoComplete="off"
                   aria-label="Pickup location"
-                  className="bg-gray-200 bg-opacity-40 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
+                  className=" w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
                 />
               </div>
               <div>
@@ -328,7 +328,7 @@ export default function Map() {
                   placeholder="Enter drop-off location"
                   autoComplete="off"
                   aria-label="Drop-off location"
-                  className=" bg-gray-200 bg-opacity-40 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
+                  className="  w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-900 placeholder-gray-500"
                 />
               </div>
             </div>
