@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { MapPin, Navigation, Car, Clock } from 'lucide-react';
+import { Navigation, Car, Clock } from 'lucide-react';
 import { getUberPriceEstimate } from '../services/uberService';
 
 interface Location {
@@ -21,13 +21,6 @@ const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 if (!GOOGLE_MAPS_API_KEY) {
   console.error('Google Maps API key is missing. Please add it to your .env file.');
 }
-
-// Service logos
-const SERVICE_LOGOS = {
-  Uber: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4NCAyNSI+PHBhdGggZmlsbD0iIzAwMDAwMCIgZD0iTTI4LjYgMTIuM2MtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6bTQuMyAwYy0uNiAwLTEuMS41LTEuMSAxLjEgMCAuNi41IDEuMSAxLjEgMS4xaDEuNWMuNiAwIDEuMS0uNSAxLjEtMS4xIDAtLjYtLjUtMS4xLTEuMS0xLjFoLTEuNXptLTQuMyA0LjNjLS42IDAtMS4xLjUtMS4xIDEuMSAwIC42LjUgMS4xIDEuMSAxLjFoMS41Yy42IDAgMS4xLS41IDEuMS0xLjEgMC0uNi0uNS0xLjEtMS4xLTEuMWgtMS41em00LjMgMGMtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6Ii8+PHBhdGggZmlsbD0iIzAwMDAwMCIgZD0iTTQxLjkgMTIuM2MtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6bTQuMyAwYy0uNiAwLTEuMS41LTEuMSAxLjEgMCAuNi41IDEuMSAxLjEgMS4xaDEuNWMuNiAwIDEuMS0uNSAxLjEtMS4xIDAtLjYtLjUtMS4xLTEuMS0xLjFoLTEuNXptLTQuMyA0LjNjLS42IDAtMS4xLjUtMS4xIDEuMSAwIC42LjUgMS4xIDEuMSAxLjFoMS41Yy42IDAgMS4xLS41IDEuMS0xLjEgMC0uNi0uNS0xLjEtMS4xLTEuMWgtMS41em00LjMgMGMtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6Ii8+PHBhdGggZmlsbD0iIzAwMDAwMCIgZD0iTTU1LjIgMTIuM2MtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6bTQuMyAwYy0uNiAwLTEuMS41LTEuMSAxLjEgMCAuNi41IDEuMSAxLjEgMS4xaDEuNWMuNiAwIDEuMS0uNSAxLjEtMS4xIDAtLjYtLjUtMS4xLTEuMS0xLjFoLTEuNXptLTQuMyA0LjNjLS42IDAtMS4xLjUtMS4xIDEuMSAwIC42LjUgMS4xIDEuMSAxLjFoMS41Yy42IDAgMS4xLS41IDEuMS0xLjEgMC0uNi0uNS0xLjEtMS4xLTEuMWgtMS41em00LjMgMGMtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6Ii8+PC9zdmc+',
-  Ola: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjUiPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGQ9Ik0yMC4yIDUuM2MtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6bTQuMyAwYy0uNiAwLTEuMS41LTEuMSAxLjEgMCAuNi41IDEuMSAxLjEgMS4xaDEuNWMuNiAwIDEuMS0uNSAxLjEtMS4xIDAtLjYtLjUtMS4xLTEuMS0xLjFoLTEuNXptLTQuMyA0LjNjLS42IDAtMS4xLjUtMS4xIDEuMSAwIC42LjUgMS4xIDEuMSAxLjFoMS41Yy42IDAgMS4xLS41IDEuMS0xLjEgMC0uNi0uNS0xLjEtMS4xLTEuMWgtMS41em00LjMgMGMtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6Ii8+PC9zdmc+',
-  Rapido: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMjUiPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGQ9Ik0yMC4yIDUuM2MtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6bTQuMyAwYy0uNiAwLTEuMS41LTEuMSAxLjEgMCAuNi41IDEuMSAxLjEgMS4xaDEuNWMuNiAwIDEuMS0uNSAxLjEtMS4xIDAtLjYtLjUtMS4xLTEuMS0xLjFoLTEuNXptLTQuMyA0LjNjLS42IDAtMS4xLjUtMS4xIDEuMSAwIC42LjUgMS4xIDEuMSAxLjFoMS41Yy42IDAgMS4xLS41IDEuMS0xLjEgMC0uNi0uNS0xLjEtMS4xLTEuMWgtMS41em00LjMgMGMtLjYgMC0xLjEuNS0xLjEgMS4xIDAgLjYuNSAxLjEgMS4xIDEuMWgxLjVjLjYgMCAxLjEtLjUgMS4xLTEuMSAwLS42LS41LTEuMS0xLjEtMS4xaC0xLjV6Ii8+PC9zdmc+'
-};
 
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -261,10 +254,7 @@ export default function Map() {
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(pickupLocation);
       bounds.extend(dropoffLocation);
-      map?.fitBounds(bounds);
-
-      // Add some padding to the bounds
-      const padding = 50;
+      map?.fitBounds(bounds, 50); // Add padding to the bounds
       map?.setZoom(map.getZoom()! - 1);
 
       setDistance(result.routes[0].legs[0].distance?.text || '');

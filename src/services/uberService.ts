@@ -1,5 +1,3 @@
-const UBER_CLIENT_ID = import.meta.env.VITE_UBER_CLIENT_ID;
-
 interface UberPriceEstimate {
   price: number;
   duration: number;
