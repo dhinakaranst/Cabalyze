@@ -1,4 +1,15 @@
-const teamMembers = [
+import React from 'react';
+
+interface TeamMember {
+  name: string;
+  role: string;
+  image: string;
+  quote: string;
+  linkedin: string;
+  github: string;
+}
+
+const teamMembers: TeamMember[] = [
   {
     name: "Mantej Singh Arora",
     role: "The Front Man (Lead)",
@@ -41,7 +52,7 @@ const teamMembers = [
   }
 ];
 
-const Team = () => {
+const Team: React.FC = () => {
   return (
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
