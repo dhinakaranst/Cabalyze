@@ -5,7 +5,6 @@
   <h3>Your Smart Ride Price Comparison Platform</h3>
   <p>Compare ride prices across multiple services instantly</p>
 </div>
-
 ## 🌟 Overview
 
 Cabalyze is a modern web application that helps users make informed decisions about their rides by comparing prices across multiple ride-hailing services in real-time. Built with React, TypeScript, and Google Maps integration, our platform provides a seamless experience for finding the best ride prices.
